@@ -61,16 +61,7 @@ class _familiasState extends State<familias> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(
-          onPressed: () {
-            Navigator.pushReplacement<void, void>(
-              context,
-              MaterialPageRoute<void>(
-                builder: (BuildContext context) => homepage(),
-              ),
-            );
-          },
-        ),
+        leading: BackButton(),
         title: TextFormField(
           controller: memCtrl,
           keyboardType: TextInputType.text,

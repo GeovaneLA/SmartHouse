@@ -147,40 +147,40 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 20,
             ),
-            Container(
-              height: 60,
-              alignment: Alignment.centerLeft,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5),
-                ),
-              ),
-              child: SizedBox.expand(
-                child: FlatButton(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        "Entrar com o Google",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: 20,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                      Container(
-                        child: Image.asset('assets/google.png'),
-                        height: 28,
-                        width: 28,
-                      ),
-                    ],
-                  ),
-                  onPressed: () => {},
-                ),
-              ),
-            ),
+            // Container(
+            //   height: 60,
+            //   alignment: Alignment.centerLeft,
+            //   decoration: BoxDecoration(
+            //     color: Colors.white,
+            //     borderRadius: BorderRadius.all(
+            //       Radius.circular(5),
+            //     ),
+            //   ),
+            //   child: SizedBox.expand(
+            //     child: FlatButton(
+            //       child: Row(
+            //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //         children: <Widget>[
+            //           Text(
+            //             "Entrar com o Google",
+            //             style: TextStyle(
+            //               fontWeight: FontWeight.bold,
+            //               color: Colors.black,
+            //               fontSize: 20,
+            //             ),
+            //             textAlign: TextAlign.left,
+            //           ),
+            //           Container(
+            //             child: Image.asset('assets/google.png'),
+            //             height: 28,
+            //             width: 28,
+            //           ),
+            //         ],
+            //       ),
+            //       onPressed: () => {},
+            //     ),
+            //   ),
+            // ),
             SizedBox(
               height: 5,
             ),

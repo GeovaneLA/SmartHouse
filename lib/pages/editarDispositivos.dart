@@ -149,9 +149,24 @@ class _editarDispositivosState extends State<editarDispositivos> {
                           ),
                         ],
                       ),
-                      onPressed: () {
-                        remove2(widget.index2);
-                      },
+                      onPressed: () => showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const Text('Deseja excluir esse dispositivo?'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'Não'),
+                              child: const Text('Não'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                remove2(widget.index2);
+                              },
+                              child: const Text('Sim'),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
