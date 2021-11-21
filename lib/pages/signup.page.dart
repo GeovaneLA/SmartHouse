@@ -1,6 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:homemanager/models/checkauth.dart';
+import 'package:homemanager/services/auth_service.dart';
 
-class SignupPage extends StatelessWidget {
+class SignupPage extends StatefulWidget {
+  @override
+  _SignupPageState createState() => _SignupPageState();
+}
+
+class _SignupPageState extends State<SignupPage> {
+  var nome = TextEditingController();
+
+  var email = TextEditingController();
+
+  var senha = TextEditingController();
+
+  var ConfirmarSenha = TextEditingController();
+
+  cadastrar() {
+    if (senha.text == ConfirmarSenha.text) {
+      AuthService.to.createUser(email.text, senha.text, nome.text);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Checkauth(),
+        ),
+      );
+    } else {
+      setState(() {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'As senhas não são iguais!',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,6 +57,7 @@ class SignupPage extends StatelessWidget {
               height: 20,
             ),
             TextFormField(
+              controller: nome,
               // autofocus: true,
               keyboardType: TextInputType.text,
               //autovalidateMode: AutovalidateMode.always,
@@ -36,6 +75,7 @@ class SignupPage extends StatelessWidget {
               ),
             ),
             TextFormField(
+              controller: email,
               // autofocus: true,
               keyboardType: TextInputType.emailAddress,
               //autovalidateMode: AutovalidateMode.always,
@@ -53,6 +93,7 @@ class SignupPage extends StatelessWidget {
               ),
             ),
             TextFormField(
+              controller: senha,
               // autofocus: true,
               keyboardType: TextInputType.emailAddress,
               obscureText: true,
@@ -70,6 +111,7 @@ class SignupPage extends StatelessWidget {
               ),
             ),
             TextFormField(
+              controller: ConfirmarSenha,
               // autofocus: true,
               keyboardType: TextInputType.emailAddress,
               obscureText: true,
@@ -116,7 +158,7 @@ class SignupPage extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  onPressed: () => {},
+                  onPressed: cadastrar,
                 ),
               ),
             ),

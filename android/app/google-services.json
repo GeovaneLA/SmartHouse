@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "85680343539",
+    "project_id": "homemanagerteste",
+    "storage_bucket": "homemanagerteste.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:85680343539:android:cb921a2bd11d804642aa86",
+        "android_client_info": {
+          "package_name": "com.example.homemanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "85680343539-e2tvalgqmqiqblcii8o1cotg71jd9irs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8rwNREWuuwMy_Efb41FRJvhH-pQD5o44"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "85680343539-e2tvalgqmqiqblcii8o1cotg71jd9irs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

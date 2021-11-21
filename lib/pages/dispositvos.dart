@@ -3,7 +3,6 @@ import 'package:homemanager/models/dispositivosDados.dart';
 import 'package:homemanager/pages/editarDispositivos.dart';
 import 'package:homemanager/pages/editarFamilias.dart';
 import 'package:homemanager/pages/homepage.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import '/models/familiasDados.dart';
 import 'editarFamilias.dart';

@@ -1,8 +1,31 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:homemanager/pages/dispositvos.dart';
 import 'package:homemanager/pages/familias.dart';
+import 'package:homemanager/services/auth_service.dart';
 
-class homepage extends StatelessWidget {
+// Future<String> pesquisar() async {
+//   var collection = FirebaseFirestore.instance.collection('usuarios');
+
+//   var result = await collection.get();
+
+//   var nome;
+
+//   for (var doc in result.docs) {
+//     if (doc.id == AuthService.to.user!.uid) {
+//       nome = doc['nome'];
+//     }
+//   }
+//   return nome;
+// }
+
+class homepage extends StatefulWidget {
+  @override
+  _homepageState createState() => _homepageState();
+}
+
+class _homepageState extends State<homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +101,7 @@ class homepage extends StatelessWidget {
           children: <Widget>[
             Container(
               child: Text(
-                "Bem-vindo!",
+                AuthService.to.user!.email!,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 36,
@@ -130,13 +153,13 @@ class homepage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  onPressed: () {
+                  onPressed: () => {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => familias(),
                       ),
-                    );
+                    ),
                   },
                 ),
               ),
@@ -198,6 +221,51 @@ class homepage extends StatelessWidget {
             ),
             SizedBox(
               height: 10,
+            ),
+            Container(
+              height: 70,
+              alignment: Alignment.centerLeft,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  stops: [0.3, 1],
+                  colors: [
+                    Colors.lightBlue.shade900,
+                    Colors.lightBlue,
+                  ],
+                ),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(5),
+                ),
+              ),
+              child: SizedBox.expand(
+                child: FlatButton(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        "Sair",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                      Container(
+                        child: Icon(
+                          Icons.account_tree_outlined,
+                          color: Colors.white,
+                        ),
+                        height: 28,
+                        width: 28,
+                      ),
+                    ],
+                  ),
+                  onPressed: () => {AuthService.to.logout()},
+                ),
+              ),
             ),
           ],
         ),

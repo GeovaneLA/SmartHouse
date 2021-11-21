@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:homemanager/pages/homepage.dart';
 import 'package:homemanager/pages/reset-password.dart';
 import 'package:homemanager/pages/signup.page.dart';
+import 'package:homemanager/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -15,27 +16,7 @@ class _LoginPageState extends State<LoginPage> {
   var senha = TextEditingController();
 
   void checkLogin() {
-    if (login.text == 'Admin' && senha.text == '123') {
-      setState(() {
-        Navigator.pushReplacement<void, void>(
-          context,
-          MaterialPageRoute<void>(
-            builder: (BuildContext context) => homepage(),
-          ),
-        );
-        login.text = "";
-        senha.text = "";
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text(
-            'Usuario ou senha invalido!',
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
-    }
+    AuthService.to.login(login.text, senha.text);
   }
 
   @override

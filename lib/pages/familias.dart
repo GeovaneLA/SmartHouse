@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:homemanager/pages/editarFamilias.dart';
 import 'package:homemanager/pages/homepage.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import '/models/familiasDados.dart';
 import 'editarFamilias.dart';
@@ -23,24 +22,6 @@ class familias extends StatefulWidget {
 }
 
 class _familiasState extends State<familias> {
-  // var item;
-
-  // _listarUsuarios() async {
-  //   final url = "http://192.168.56.1/flutter/dados/usuarios.php";
-  //   final response = await http.get(url);
-  //   final map = json.decode(response.body);
-  //   final itens = map["result"];
-  //   this.dados = itens;
-  //   print(this.dados);
-  // }
-
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   _listarUsuarios();
-  // }
-
   var memCtrl = TextEditingController();
 
   void add() {
