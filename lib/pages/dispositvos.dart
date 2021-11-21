@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:homemanager/models/checkauth.dart';
 import 'package:homemanager/models/dispositivosDados.dart';
 import 'package:homemanager/pages/editarDispositivos.dart';
 import 'package:homemanager/pages/editarFamilias.dart';
@@ -63,24 +64,42 @@ class _dispositivosState extends State<dispositivos> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(),
-        title: TextFormField(
-          controller: memCtrl,
-          keyboardType: TextInputType.text,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-          ),
-          decoration: InputDecoration(
-            labelText: "Adicionar Dispositivos",
-            labelStyle: TextStyle(
-              color: Colors.white,
-            ),
-          ),
+        leading: BackButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Checkauth(),
+              ),
+            );
+          },
         ),
         actions: <Widget>[
           IconButton(
-            onPressed: add,
+            onPressed: () => showDialog<String>(
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                title: const Text(
+                    'Digite o codigo do dispositivo a ser adicionado'),
+                content: TextFormField(
+                  controller: memCtrl,
+                  keyboardType: TextInputType.text,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                  ),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      add();
+                      Navigator.pop(context, 'Não');
+                    },
+                    child: const Text('Ok'),
+                  ),
+                ],
+              ),
+            ),
             icon: Icon(Icons.add),
           )
         ],
