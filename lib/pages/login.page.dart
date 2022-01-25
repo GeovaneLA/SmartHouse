@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:homemanager/pages/homepage.dart';
@@ -15,8 +17,26 @@ class _LoginPageState extends State<LoginPage> {
 
   var senha = TextEditingController();
 
+  bool loading = false;
+
   void checkLogin() {
+    setState(() {
+      loading = true;
+    });
     AuthService.to.login(login.text, senha.text);
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      setState(() {
+        loading = false;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Login ou senha incorretos!',
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      });
+    });
   }
 
   @override
@@ -122,23 +142,36 @@ class _LoginPageState extends State<LoginPage> {
               child: SizedBox.expand(
                 child: FlatButton(
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        "Entrar",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: 20,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                      Container(
-                        child: Image.asset('assets/login.png'),
-                        height: 28,
-                        width: 28,
-                      ),
-                    ],
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: (loading)
+                        ? [
+                            Padding(
+                              padding: EdgeInsets.all(16),
+                              child: SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )
+                          ]
+                        : [
+                            Text(
+                              "Entrar",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 20,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                            // Container(
+                            //   child: Image.asset('assets/login.png'),
+                            //   height: 28,
+                            //   width: 28,
+                            // ),
+                          ],
                   ),
                   onPressed: checkLogin,
                 ),

@@ -3,22 +3,63 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:homemanager/pages/dispositvos.dart';
 import 'package:homemanager/pages/familias.dart';
+import 'package:homemanager/pages/membrosFamilia.dart';
 import 'package:homemanager/services/auth_service.dart';
 
-// Future<String> pesquisar() async {
-//   var collection = FirebaseFirestore.instance.collection('usuarios');
+Widget buildUser(UserTeste user) => Text(
+      'Bem-vindo, ${user.nome}',
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        fontSize: 36,
+        color: Colors.white,
+      ),
+    );
 
-//   var result = await collection.get();
+class UserTeste {
+  late final String nome;
+  late final String email;
 
-//   var nome;
+  UserTeste({
+    required this.nome,
+    required this.email,
+  });
 
-//   for (var doc in result.docs) {
-//     if (doc.id == AuthService.to.user!.uid) {
-//       nome = doc['nome'];
-//     }
-//   }
-//   return nome;
-// }
+  Map<String, dynamic> ToJson() => {
+        'nome': nome,
+        'email': email,
+      };
+
+  static UserTeste fromJson(Map<String, dynamic> json) => UserTeste(
+        nome: json['nome'],
+        email: json['email'],
+      );
+}
+
+Stream<List<UserTeste>> readUsers() => FirebaseFirestore.instance
+    .collection('usuarios')
+    .snapshots()
+    .map((snapshot) =>
+        snapshot.docs.map((doc) => UserTeste.fromJson(doc.data())).toList());
+
+Future<UserTeste?> readUser() async {
+  final docUser = FirebaseFirestore.instance
+      .collection('usuarios')
+      .doc(AuthService.to.user!.uid);
+  final snapshot = await docUser.get();
+
+  if (snapshot.exists) {
+    return UserTeste.fromJson(snapshot.data()!);
+  }
+}
+
+void NavFamilias(BuildContext context) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => membrosFamilia(),
+    ),
+  );
+}
 
 class homepage extends StatefulWidget {
   @override
@@ -39,7 +80,7 @@ class _homepageState extends State<homepage> {
             padding: EdgeInsets.symmetric(horizontal: 20),
             children: <Widget>[
               const SizedBox(
-                height: 48,
+                height: 78,
               ),
               buildMenuItem(
                 text: 'Perfil',
@@ -99,16 +140,23 @@ class _homepageState extends State<homepage> {
         color: Colors.black87,
         child: ListView(
           children: <Widget>[
-            Container(
-              child: Text(
-                AuthService.to.user!.email!,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 36,
-                  color: Colors.white,
-                ),
-              ),
+            SizedBox(
+              height: 100,
             ),
+            Container(
+                child: FutureBuilder<UserTeste?>(
+                    future: readUser(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        final user = snapshot.data;
+
+                        return user == null
+                            ? Center(child: Text('Sem usuario'))
+                            : buildUser(user);
+                      } else {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                    })),
             SizedBox(
               height: 150,
             ),
@@ -154,12 +202,7 @@ class _homepageState extends State<homepage> {
                     ],
                   ),
                   onPressed: () => {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => familias(),
-                      ),
-                    ),
+                    NavFamilias(context),
                   },
                 ),
               ),
@@ -231,8 +274,8 @@ class _homepageState extends State<homepage> {
                   end: Alignment.bottomRight,
                   stops: [0.3, 1],
                   colors: [
-                    Colors.lightBlue.shade900,
-                    Colors.lightBlue,
+                    Colors.red.shade900,
+                    Colors.red,
                   ],
                 ),
                 borderRadius: BorderRadius.all(
@@ -255,7 +298,7 @@ class _homepageState extends State<homepage> {
                       ),
                       Container(
                         child: Icon(
-                          Icons.account_tree_outlined,
+                          Icons.logout,
                           color: Colors.white,
                         ),
                         height: 28,
@@ -270,8 +313,21 @@ class _homepageState extends State<homepage> {
           ],
         ),
       ),
+      // body: FutureBuilder<User?>(
+      //   future: readUser(),
+      //   builder: (context, snapshot){},
+      // )
     );
   }
+
+  // FutureBuilder<User?> readUser() async{
+  //   final docUser = FirebaseFirestore.instance.collection('usuarios').doc(AuthService.to.user!.uid);
+  //   final snapshot = await docUser.get();
+
+  //   if (snapshot.exists){
+  //     return User.fromJson(snapshot.data()!);
+  //   }
+  // }
 
   Widget buildMenuItem({
     required String text,

@@ -12,6 +12,7 @@ class AuthService extends GetxController {
 
   var userAuth = false.obs;
   var collection = FirebaseFirestore.instance.collection('usuarios');
+  bool loading = false;
 
   @override
   void onInit() {

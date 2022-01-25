@@ -105,7 +105,7 @@ class ResetPasswordPage extends StatelessWidget {
                     context: context,
                     builder: (BuildContext context) => AlertDialog(
                       title: const Text(
-                          'Um email com instruições foi enviado para você!'),
+                          'Um email com instruções foi enviado para você!'),
                       actions: <Widget>[
                         TextButton(
                           onPressed: () {
