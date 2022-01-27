@@ -16,6 +16,12 @@ import 'editarFamilias.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class membrosFamilia extends StatefulWidget {
+  final String codFam;
+  final String nomeFam;
+
+  membrosFamilia({Key? key, required this.codFam, required this.nomeFam})
+      : super(key: key);
+
   @override
   _membrosFamiliaState createState() => _membrosFamiliaState();
 }
@@ -23,11 +29,19 @@ class membrosFamilia extends StatefulWidget {
 class _membrosFamiliaState extends State<membrosFamilia> {
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.black87,
+      appBar: AppBar(
+        title: Text('${widget.nomeFam}'),
+        backgroundColor: Colors.black87,
+      ),
+      body: Container(
+        padding: EdgeInsets.only(
+          top: 60,
+          left: 20,
+          right: 40,
         ),
-        body: StreamBuilder<List<UserTeste>>(
-            stream: readUsers(),
+        color: Colors.black87,
+        child: StreamBuilder<List<UserTeste>>(
+            stream: readUsers(widget.codFam),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 final users = snapshot.data!;
@@ -39,37 +53,26 @@ class _membrosFamiliaState extends State<membrosFamilia> {
                 return Center(child: CircularProgressIndicator());
               }
             }),
-        // body: FutureBuilder<UserTeste?>(
-        //     future: readUser(),
-        //     builder: (context, snapshot) {
-        //       if (snapshot.hasData) {
-        //         final user = snapshot.data;
-
-        //         return user == null
-        //             ? Center(child: Text('Sem usuario'))
-        //             : buildUser(user);
-        //       } else {
-        //         return Center(child: CircularProgressIndicator());
-        //       }
-        //     })
-        // body: ElevatedButton(
-        //   child: Text('update'),
-        //   onPressed: () {
-        //     final docUser = FirebaseFirestore.instance
-        //         .collection('usuarios')
-        //         .doc(AuthService.to.user!.uid);
-
-        //     var list = ['teste1'];
-        //     docUser.update({'familias': FieldValue.arrayUnion(list)});
-        //   },
-        // ),
-      );
+      ));
 }
 
 Widget buildUser(UserTeste user) => ListTile(
-      leading: CircleAvatar(),
-      title: Text(user.nome),
-      subtitle: Text(user.email),
+      leading: Icon(
+        Icons.account_circle,
+        color: Colors.white,
+        size: 42,
+      ),
+      title: Text(
+        user.nome,
+        style: TextStyle(
+          fontSize: 18,
+          color: Colors.white,
+        ),
+      ),
+      subtitle: Text(
+        user.email,
+        style: TextStyle(color: Colors.white),
+      ),
     );
 
 class UserTeste {
@@ -91,29 +94,26 @@ class UserTeste {
   static UserTeste fromJson(Map<String, dynamic> json) => UserTeste(
         nome: json['nome'],
         email: json['email'],
-        //familias: json['familias'],
       );
 }
 
-Stream<List<UserTeste>> readUsers() => FirebaseFirestore.instance
+Stream<List<UserTeste>> readUsers(String codFam) => FirebaseFirestore.instance
     .collection('familias')
-    .doc('XHfJCF1XPbHrHPWEOtMz')
+    .doc(codFam)
     .collection('Admins')
     .snapshots()
     .map((snapshot) =>
         snapshot.docs.map((doc) => UserTeste.fromJson(doc.data())).toList());
 
-Future<UserTeste?> readUser() async {
+Future<UserTeste?> readUser(String codFam) async {
   final docUser = FirebaseFirestore.instance
       .collection('familias')
-      .doc('XHfJCF1XPbHrHPWEOtMz')
+      .doc(codFam)
       .collection('Admins')
-      .doc('cIZxbEhO0IOEq5WAptDt68pIKKg2');
+      .doc(AuthService.to.user!.uid);
   final snapshot = await docUser.get();
 
   if (snapshot.exists) {
     return UserTeste.fromJson(snapshot.data()!);
-  } else {
-    print('teste');
   }
 }

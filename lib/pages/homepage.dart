@@ -56,7 +56,7 @@ void NavFamilias(BuildContext context) {
   Navigator.push(
     context,
     MaterialPageRoute(
-      builder: (context) => membrosFamilia(),
+      builder: (context) => familias(),
     ),
   );
 }

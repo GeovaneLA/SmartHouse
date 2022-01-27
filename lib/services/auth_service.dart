@@ -47,7 +47,6 @@ class AuthService extends GetxController {
       collection.doc(AuthService.to.user!.uid).set({
         'nome': nome,
         'email': email,
-        'familias': [],
       });
     } catch (e) {
       showSnack('Erro ao registrar', e.toString());

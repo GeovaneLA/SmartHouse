@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:homemanager/models/checkauth.dart';
 import 'package:homemanager/pages/editarFamilias.dart';
 import 'package:homemanager/pages/homepage.dart';
 import 'package:flutter/material.dart';
+import 'package:homemanager/pages/membrosFamilia.dart';
+import 'package:homemanager/services/auth_service.dart';
 import '/models/familiasDados.dart';
 import 'editarFamilias.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,46 +25,77 @@ class familias extends StatefulWidget {
   _familiasState createState() => _familiasState();
 }
 
+class UserTeste {
+  late final String nome;
+  late final String email;
+
+  UserTeste({
+    required this.nome,
+    required this.email,
+  });
+
+  Map<String, dynamic> ToJson() => {
+        'nome': email,
+      };
+
+  static UserTeste fromJson(Map<String, dynamic> json) => UserTeste(
+        nome: json['nome'],
+        email: json['email'],
+        //familias: json['familias'],
+      );
+}
+
 class _familiasState extends State<familias> {
   var memCtrl = TextEditingController();
 
-  void add() {
-    if (memCtrl.text.isEmpty) return;
+  // void navMembros(BuildContext context) {
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => membrosFamilia(),
+  //     ),
+  //   );
+  // }
 
-    setState(() {
-      widget.dados.add(Famdados(nome: memCtrl.text, adm: false));
-      save();
-      memCtrl.text = "";
+  void createFam(String nome) async {
+    final docUser = FirebaseFirestore.instance
+        .collection('usuarios')
+        .doc(AuthService.to.user!.uid)
+        .collection('familias')
+        .doc();
+
+    final docUser2 = FirebaseFirestore.instance
+        .collection('usuarios')
+        .doc(AuthService.to.user!.uid);
+
+    final snapshot = await docUser2.get();
+
+    final user = UserTeste.fromJson(snapshot.data()!);
+
+    docUser.set({
+      'nome': nome,
+      'uid': docUser.id,
     });
-    print(widget.dados[0].adm);
-  }
 
-  Future load() async {
-    var prefs = await SharedPreferences.getInstance();
-    var data = prefs.getString('data');
+    final docFam =
+        FirebaseFirestore.instance.collection('familias').doc(docUser.id);
 
-    if (data != null) {
-      Iterable decoded = jsonDecode(data);
-      List<Famdados> result = decoded.map((x) => Famdados.fromJson(x)).toList();
-      setState(() {
-        widget.dados = result;
-      });
-    }
-  }
+    docFam.set({'nome': nome});
 
-  _familiasState() {
-    load();
-  }
+    final docFam2 = FirebaseFirestore.instance
+        .collection('familias')
+        .doc(docUser.id)
+        .collection('Admins')
+        .doc(AuthService.to.user!.uid);
 
-  save() async {
-    var prefs = await SharedPreferences.getInstance();
-    await prefs.setString('data', jsonEncode(widget.dados));
+    docFam2.set({'nome': user.nome, 'email': AuthService.to.user!.email});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text('Suas Familias'),
         leading: BackButton(
           onPressed: () {
             Navigator.push(
@@ -77,7 +111,7 @@ class _familiasState extends State<familias> {
             onPressed: () => showDialog<String>(
               context: context,
               builder: (BuildContext context) => AlertDialog(
-                title: const Text('Digite o nome do membro a ser adicionado'),
+                title: const Text('Digite o nome da Familia:'),
                 content: TextFormField(
                   controller: memCtrl,
                   keyboardType: TextInputType.text,
@@ -89,7 +123,7 @@ class _familiasState extends State<familias> {
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
-                      add();
+                      createFam(memCtrl.text);
                       Navigator.pop(context, 'Não');
                     },
                     child: const Text('Ok'),
@@ -108,48 +142,105 @@ class _familiasState extends State<familias> {
           right: 40,
         ),
         color: Colors.black87,
-        child: Container(
-          child: new ListView.builder(
-            itemCount: widget.dados != null ? widget.dados.length : 0,
-            itemBuilder: (context, i) {
-              return ListTile(
-                leading: Icon(
-                  Icons.account_circle_outlined,
-                  color: Colors.white,
-                ),
-                title: Text(
-                  widget.dados[i].nome,
-                  style: TextStyle(color: Colors.white),
-                ),
-                subtitle: widget.dados[i].adm == true
-                    ? Text(
-                        "Administrador",
-                        style: TextStyle(color: Colors.white),
-                      )
-                    : Text(
-                        'Normal',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                trailing: Icon(
-                  Icons.arrow_forward_ios_sharp,
-                  color: Colors.white,
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => editarFamilias(
-                        index: i,
-                        dados: widget.dados,
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-          ),
-        ),
+        child: StreamBuilder<List<familiasTeste>>(
+            stream: lerFamilias(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                final users = snapshot.data!;
+
+                return ListView(
+                  children: users.map<Widget>(buildFamilias).toList(),
+                );
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
+            }),
+
+        //
+        // child: ElevatedButton(
+        //     child: Text('update'),
+        //     onPressed: () {
+        //       final docUser = FirebaseFirestore.instance
+        //           .collection('usuarios')
+        //           .doc(AuthService.to.user!.uid)
+        //           .collection('familias')
+        //           .doc();
+
+        //       print(docUser.id);
+
+        //       docUser.set({
+        //         'nome': 'alves',
+        //         'uid': docUser.id,
+        //       });
+
+        //       final docFam = FirebaseFirestore.instance
+        //           .collection('familias')
+        //           .doc(docUser.id)
+        //           .collection('Admins')
+        //           .doc(AuthService.to.user!.uid);
+
+        //       docFam.set({'email': AuthService.to.user!.email});
+        //     }),
       ),
     );
   }
 }
+
+Widget buildFamilias(familiasTeste user) =>
+    Builder(builder: (BuildContext context) {
+      return ListTile(
+        leading: Icon(
+          Icons.family_restroom,
+          size: 36,
+          color: Colors.white,
+        ),
+        title: Text(
+          user.nome,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 25,
+          ),
+        ),
+        onTap: () {
+          print(user.uid);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => membrosFamilia(
+                codFam: user.uid,
+                nomeFam: user.nome,
+              ),
+            ),
+          );
+        },
+      );
+    });
+
+class familiasTeste {
+  late final String nome;
+  late final String uid;
+
+  familiasTeste({
+    required this.nome,
+    required this.uid,
+  });
+
+  Map<String, dynamic> ToJson() => {
+        'nome': nome,
+        'uid': uid,
+      };
+
+  static familiasTeste fromJson(Map<String, dynamic> json) => familiasTeste(
+        nome: json['nome'],
+        uid: json['uid'],
+      );
+}
+
+Stream<List<familiasTeste>> lerFamilias() => FirebaseFirestore.instance
+    .collection('usuarios')
+    .doc(AuthService.to.user!.uid)
+    .collection('familias')
+    .snapshots()
+    .map((snapshot) => snapshot.docs
+        .map((doc) => familiasTeste.fromJson(doc.data()))
+        .toList());
