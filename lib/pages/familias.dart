@@ -88,7 +88,22 @@ class _familiasState extends State<familias> {
         .collection('Admins')
         .doc(AuthService.to.user!.uid);
 
-    docFam2.set({'nome': user.nome, 'email': AuthService.to.user!.email});
+    final docFam3 = FirebaseFirestore.instance
+        .collection('familias')
+        .doc(docUser.id)
+        .collection('Usuarios')
+        .doc(AuthService.to.user!.uid);
+
+    docFam2.set({
+      'nome': user.nome,
+      'email': AuthService.to.user!.email,
+      'familia': docUser
+    });
+    docFam3.set({
+      'nome': user.nome,
+      'email': AuthService.to.user!.email,
+      'familia': docUser
+    });
   }
 
   @override
