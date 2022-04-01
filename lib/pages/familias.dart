@@ -8,7 +8,6 @@ import 'package:homemanager/pages/membrosFamilia.dart';
 import 'package:homemanager/services/auth_service.dart';
 import '/models/familiasDados.dart';
 import 'editarFamilias.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class familias extends StatefulWidget {
   List<Famdados> dados = <Famdados>[];
@@ -97,12 +96,12 @@ class _familiasState extends State<familias> {
     docFam2.set({
       'nome': user.nome,
       'email': AuthService.to.user!.email,
-      'familia': docUser
+      'familia': docUser.id
     });
     docFam3.set({
       'nome': user.nome,
       'email': AuthService.to.user!.email,
-      'familia': docUser
+      'familia': docUser.id
     });
   }
 

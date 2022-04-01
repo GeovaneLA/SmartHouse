@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.homemanager">
-   <application
+              
+
+ <application
         android:label="homemanager"
         android:icon="@mipmap/ic_launcher">
         <activity

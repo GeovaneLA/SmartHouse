@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:homemanager/models/checkauth.dart';
 import 'package:homemanager/models/dispositivosDados.dart';
+import 'package:homemanager/pages/dispositivos.dart';
 import 'package:homemanager/pages/editarDispositivos.dart';
 import 'package:homemanager/pages/editarFamilias.dart';
 import 'package:homemanager/pages/familias.dart';
@@ -13,9 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:homemanager/services/auth_service.dart';
 import '/models/familiasDados.dart';
 import 'editarFamilias.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:homemanager/pages/admins.dart';
-import 'package:homemanager/pages/usuarios.dart';
 
 class membrosFamilia extends StatefulWidget {
   final String codFam;
@@ -112,33 +110,15 @@ class _membrosFamiliaState extends State<membrosFamilia> {
           backgroundColor: Colors.black87,
           actions: <Widget>[
             IconButton(
-              onPressed: () => showDialog<String>(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                  title:
-                      const Text('Digite o email do usuario a ser adicionado:'),
-                  content: TextFormField(
-                    controller: memCtrl,
-                    keyboardType: TextInputType.text,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                    ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Teste(),
                   ),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () {
-                        validateUser(
-                            memCtrl.text, widget.codFam, widget.nomeFam);
-                        memCtrl.text = '';
-                        Navigator.pop(context, 'Não');
-                      },
-                      child: const Text('Adicionar'),
-                    ),
-                  ],
-                ),
-              ),
-              icon: Icon(Icons.add),
+                );
+              },
+              icon: Icon(Icons.account_tree_outlined),
             )
           ],
         ),
@@ -164,6 +144,34 @@ class _membrosFamiliaState extends State<membrosFamilia> {
                   return Center(child: CircularProgressIndicator());
                 }
               }),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              title: const Text('Digite o email do usuario a ser adicionado:'),
+              content: TextFormField(
+                controller: memCtrl,
+                keyboardType: TextInputType.text,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    validateUser(memCtrl.text, widget.codFam, widget.nomeFam);
+                    memCtrl.text = '';
+                    Navigator.pop(context, 'Não');
+                  },
+                  child: const Text('Adicionar'),
+                ),
+              ],
+            ),
+          ),
+          backgroundColor: Colors.black54,
+          child: const Icon(Icons.add),
         ),
       );
 }

@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'package:homemanager/models/dispositivosDados.dart';
 import 'package:flutter/material.dart';
-import 'package:homemanager/pages/dispositvos.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class editarDispositivos extends StatefulWidget {
   int index2;
@@ -16,42 +14,6 @@ class editarDispositivos extends StatefulWidget {
 }
 
 class _editarDispositivosState extends State<editarDispositivos> {
-  void remove2(int index2) {
-    setState(() {
-      Navigator.pushReplacement<void, void>(
-        context,
-        MaterialPageRoute<void>(
-          builder: (BuildContext context) => dispositivos(),
-        ),
-      );
-      widget.dadosDisp.removeAt(index2);
-      save();
-    });
-  }
-
-  Future load() async {
-    var prefs2 = await SharedPreferences.getInstance();
-    var data2 = prefs2.getString('dataDisp');
-
-    if (data2 != null) {
-      Iterable decoded = jsonDecode(data2);
-      List<dispDados> result2 =
-          decoded.map((e) => dispDados.fromJson(e)).toList();
-      setState(() {
-        widget.dadosDisp = result2;
-      });
-    }
-  }
-
-  _editarDispositivosState() {
-    load();
-  }
-
-  save() async {
-    var prefs2 = await SharedPreferences.getInstance();
-    await prefs2.setString('dataDisp', jsonEncode(widget.dadosDisp));
-  }
-
   void acionamento() {
     setState(() {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -70,14 +32,7 @@ class _editarDispositivosState extends State<editarDispositivos> {
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
-          onPressed: () {
-            Navigator.pushReplacement<void, void>(
-              context,
-              MaterialPageRoute<void>(
-                builder: (BuildContext context) => dispositivos(),
-              ),
-            );
-          },
+          onPressed: () {},
         ),
       ),
       body: Container(
@@ -159,9 +114,7 @@ class _editarDispositivosState extends State<editarDispositivos> {
                               child: const Text('Não'),
                             ),
                             TextButton(
-                              onPressed: () {
-                                remove2(widget.index2);
-                              },
+                              onPressed: () {},
                               child: const Text('Sim'),
                             ),
                           ],
@@ -204,14 +157,15 @@ class _editarDispositivosState extends State<editarDispositivos> {
                             fontSize: 20,
                           ),
                           textAlign: TextAlign.left,
-                        ),
-                        Container(
-                          child: Icon(
-                            IconData(61418, fontFamily: 'MaterialIcons'),
-                            color: Colors.white,
-                          ),
-                          height: 28,
-                          width: 28,
+                          // ),
+                          // Container(
+                          //   child: Icon(
+                          //     IconData(61418, fontFamily: 'MaterialIcons'),
+                          //     color: Colors.white,
+                          //   ),
+                          //   height: 28,
+                          //   width: 28,
+                          //
                         ),
                       ],
                     ),

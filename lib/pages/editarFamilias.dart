@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import '/models/familiasDados.dart';
 import 'familias.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class editarFamilias extends StatefulWidget {
   int index;
@@ -17,42 +16,6 @@ class editarFamilias extends StatefulWidget {
 }
 
 class _editarFamiliasState extends State<editarFamilias> {
-  void remove(int index) {
-    setState(() {
-      Navigator.pushReplacement<void, void>(
-        context,
-        MaterialPageRoute<void>(
-          builder: (BuildContext context) => familias(),
-        ),
-      );
-      widget.dados.removeAt(index);
-      save();
-    });
-  }
-
-  Future load() async {
-    var prefs = await SharedPreferences.getInstance();
-    var data = prefs.getString('data');
-
-    if (data != null) {
-      Iterable decoded = jsonDecode(data);
-      List<Famdados> result = decoded.map((x) => Famdados.fromJson(x)).toList();
-      setState(() {
-        widget.dados = result;
-      });
-      print(widget.dados[widget.index].nome);
-    }
-  }
-
-  _editarFamiliasState() {
-    load();
-  }
-
-  save() async {
-    var prefs = await SharedPreferences.getInstance();
-    await prefs.setString('data', jsonEncode(widget.dados));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,7 +67,6 @@ class _editarFamiliasState extends State<editarFamilias> {
                   onChanged: (value) {
                     setState(() {
                       widget.dados[widget.index].adm = value!;
-                      save();
                     });
                   },
                 ),
@@ -164,9 +126,7 @@ class _editarFamiliasState extends State<editarFamilias> {
                             child: const Text('Não'),
                           ),
                           TextButton(
-                            onPressed: () {
-                              remove(widget.index);
-                            },
+                            onPressed: () {},
                             child: const Text('Sim'),
                           ),
                         ],

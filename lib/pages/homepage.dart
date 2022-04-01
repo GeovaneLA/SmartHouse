@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:homemanager/pages/dispositvos.dart';
 import 'package:homemanager/pages/familias.dart';
 import 'package:homemanager/pages/membrosFamilia.dart';
 import 'package:homemanager/services/auth_service.dart';
@@ -251,14 +250,7 @@ class _homepageState extends State<homepage> {
                       ),
                     ],
                   ),
-                  onPressed: () => {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => dispositivos(),
-                      ),
-                    ),
-                  },
+                  onPressed: () => {},
                 ),
               ),
             ),

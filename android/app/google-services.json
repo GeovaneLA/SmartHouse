@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "85680343539",
-    "project_id": "homemanagerteste",
-    "storage_bucket": "homemanagerteste.appspot.com"
+    "project_number": "66339965058",
+    "project_id": "homemanager-3a5b8",
+    "storage_bucket": "homemanager-3a5b8.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:85680343539:android:cb921a2bd11d804642aa86",
+        "mobilesdk_app_id": "1:66339965058:android:7b9920a6e0d1882bff8c9b",
         "android_client_info": {
           "package_name": "com.example.homemanager"
         }
       },
       "oauth_client": [
         {
-          "client_id": "85680343539-e2tvalgqmqiqblcii8o1cotg71jd9irs.apps.googleusercontent.com",
+          "client_id": "66339965058-i8m889gu1s03qju041dsa21apr765es7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.homemanager",
+            "certificate_hash": "9cd055f4cab0749762dfbfd1f157b38a6bbdec7d"
+          }
+        },
+        {
+          "client_id": "66339965058-jpf00es9gst4smcv0i37srj6otiiskvk.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC8rwNREWuuwMy_Efb41FRJvhH-pQD5o44"
+          "current_key": "AIzaSyAWm5aeZkXNNtx5sLPDAEXo9BM0KAbA21M"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "85680343539-e2tvalgqmqiqblcii8o1cotg71jd9irs.apps.googleusercontent.com",
+              "client_id": "66339965058-jpf00es9gst4smcv0i37srj6otiiskvk.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
