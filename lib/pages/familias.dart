@@ -124,7 +124,7 @@ class _familiasState extends State<familias> {
           IconButton(
             onPressed: () => showDialog<String>(
               context: context,
-              builder: (BuildContext context) => AlertDialog(
+              builder: (BuildContext context3) => AlertDialog(
                 title: const Text('Digite o nome da Familia:'),
                 content: TextFormField(
                   controller: memCtrl,
@@ -137,7 +137,11 @@ class _familiasState extends State<familias> {
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
-                      createFam(memCtrl.text);
+                      if (memCtrl.text == '') {
+                        Navigator.pop(context, 'Não');
+                      } else {
+                        createFam(memCtrl.text);
+                      }
                       Navigator.pop(context, 'Não');
                     },
                     child: const Text('Ok'),

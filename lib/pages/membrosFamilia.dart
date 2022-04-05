@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:homemanager/models/checkauth.dart';
 import 'package:homemanager/models/dispositivosDados.dart';
-import 'package:homemanager/pages/dispositivos.dart';
+import 'package:homemanager/pages/teste.dart';
 import 'package:homemanager/pages/editarDispositivos.dart';
 import 'package:homemanager/pages/editarFamilias.dart';
 import 'package:homemanager/pages/familias.dart';
@@ -114,7 +114,8 @@ class _membrosFamiliaState extends State<membrosFamilia> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Teste(),
+                    builder: (context) =>
+                        Teste(codFam: widget.codFam, nomeFam: widget.nomeFam),
                   ),
                 );
               },
